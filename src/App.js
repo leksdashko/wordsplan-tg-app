@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import './App.css';
+import Header from './components/Header/Header';
 const tg = window.Telegram.WebApp;
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
 
   return (
     <div className="App">
-      This is a wordsplan
+      <Header/>
     </div>
   );
 }
