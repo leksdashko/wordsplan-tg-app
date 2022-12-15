@@ -8,14 +8,9 @@ function App() {
 		tg.ready();
 	}, []);
 
-	const onClose = () => {
-		tg.close();
-	}
-
   return (
     <div className="App">
       This is a wordsplan
-			<button onClick={onClose}></button>
     </div>
   );
 }
