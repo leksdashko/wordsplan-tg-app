@@ -16,7 +16,7 @@ const Form = () => {
 		}
 
 		tg.sendData(JSON.stringify(data));
-	}, []);
+	}, [country, street, subject, tg]);
 
 	useEffect(() => {
 		tg.MainButton.setParams({
@@ -28,7 +28,7 @@ const Form = () => {
 		return () => {
 			tg.offEvent('mainButtonClicked', onSendData);
 		}
-	}, []);
+	}, [onSendData, tg]);
 
 	useEffect(() => {
 		if(!street || !country){
@@ -36,7 +36,7 @@ const Form = () => {
 		}else{
 			tg.MainButton.show();
 		}
-	}, [street, country]);
+	}, [street, country, tg]);
 
 	const onChangeCountry = (e) => {
 		setCountry(e.target.value);
