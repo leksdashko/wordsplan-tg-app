@@ -26,7 +26,7 @@ const ProductList = () => {
 			queryId
 		}
 
-		fetch('http://localhost:5000', {
+		fetch('http://5.161.120.136:5000', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
