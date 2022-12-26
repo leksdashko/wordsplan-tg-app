@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTelegram } from '../../hooks/useTelegram';
 import ProductItem from '../ProductItem/ProductItem';
 import './ProductList.css';
@@ -17,7 +17,37 @@ const getTotalPrice = (items = []) => {
 
 const ProductList = () => {
 	const [addedItems, setAddedItems] = useState([]);
-	const {tg} = useTelegram();
+	const {tg, queryId} = useTelegram();
+
+	const onSendData = useCallback(() => {
+		const data = {
+			products: addedItems,
+			totalPrice: getTotalPrice(addedItems),
+			queryId
+		}
+
+		fetch('http://localhost:5000', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		});
+
+		tg.sendData(JSON.stringify(data));
+	}, [addedItems, queryId, tg]);
+
+	useEffect(() => {
+		tg.MainButton.setParams({
+			text: 'Submit'
+		});
+
+		tg.onEvent('mainButtonClicked', onSendData);
+
+		return () => {
+			tg.offEvent('mainButtonClicked', onSendData);
+		}
+	}, [onSendData, tg]);
 
 	const onAdd = (product) => {
 		const alreadyAdded = addedItems.find(item => item.id === product.id);
@@ -36,7 +66,7 @@ const ProductList = () => {
 		}else{
 			tg.MainButton.show();
 			tg.MainButton.setParams({
-				text: `Buy ${getTotalPrice(newItems)}`
+				text: `Buy $${getTotalPrice(newItems)}`
 			});
 		}
 	}
